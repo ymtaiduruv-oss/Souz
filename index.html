@@ -1,0 +1,694 @@
+```html
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ОЮУНЫ ТУЛГА СӨУЗ - Санал хүсэлтийн систем</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- QR Code Generator Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#2563eb',
+                            600: '#1d4ed8',
+                            700: '#1e40af',
+                            800: '#1e3a8a',
+                            900: '#172554',
+                            gold: '#f59e0b'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Print styling for A4 Poster */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #posterSection, #posterSection * {
+                visibility: visible;
+            }
+            #posterSection {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                box-shadow: none !important;
+                background: white !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col antialiased bg-slate-50">
+
+    <!-- NAVIGATION / HEADER -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo & Name -->
+            <div class="flex items-center space-x-3 sm:space-x-4">
+                <!-- Custom Emblem SVG matching uploaded image -->
+                <div class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0">
+                    <svg viewBox="0 0 300 300" class="w-full h-full drop-shadow-md">
+                        <!-- Outer Oval Ring -->
+                        <ellipse cx="150" cy="150" rx="130" ry="100" fill="none" stroke="#2563eb" stroke-width="26" />
+                        
+                        <!-- Center Pen Body -->
+                        <rect x="132" y="70" width="36" height="100" fill="#2563eb" rx="2"/>
+                        <line x1="132" y1="95" x2="168" y2="95" stroke="#f59e0b" stroke-width="6"/>
+                        
+                        <!-- Nib -->
+                        <polygon points="132,170 168,170 150,235" fill="#f59e0b"/>
+                        <polygon points="144,170 156,170 150,235" fill="#d97706"/>
+                        <line x1="150" y1="170" x2="150" y2="215" stroke="#1e3a8a" stroke-width="2"/>
+                        <circle cx="150" cy="190" r="3" fill="#1e3a8a"/>
+
+                        <!-- Left Open Book -->
+                        <g transform="translate(50, 110) scale(0.7)">
+                            <path d="M0,20 Q20,10 45,25 Q70,10 90,20 L90,65 Q70,55 45,70 Q20,55 0,65 Z" fill="#ffffff" stroke="#000000" stroke-width="4"/>
+                            <line x1="45" y1="25" x2="45" y2="70" stroke="#000000" stroke-width="4"/>
+                            <line x1="10" y1="30" x2="38" y2="23" stroke="#94a3b8" stroke-width="2"/>
+                            <line x1="10" y1="42" x2="38" y2="35" stroke="#94a3b8" stroke-width="2"/>
+                            <line x1="52" y1="23" x2="80" y2="30" stroke="#94a3b8" stroke-width="2"/>
+                            <line x1="52" y1="35" x2="80" y2="42" stroke="#94a3b8" stroke-width="2"/>
+                        </g>
+
+                        <!-- Right Open Book -->
+                        <g transform="translate(190, 110) scale(0.7)">
+                            <path d="M0,20 Q20,10 45,25 Q70,10 90,20 L90,65 Q70,55 45,70 Q20,55 0,65 Z" fill="#ffffff" stroke="#000000" stroke-width="4"/>
+                            <line x1="45" y1="25" x2="45" y2="70" stroke="#000000" stroke-width="4"/>
+                            <line x1="10" y1="30" x2="38" y2="23" stroke="#94a3b8" stroke-width="2"/>
+                            <line x1="10" y1="42" x2="38" y2="35" stroke="#94a3b8" stroke-width="2"/>
+                            <line x1="52" y1="23" x2="80" y2="30" stroke="#94a3b8" stroke-width="2"/>
+                            <line x1="52" y1="35" x2="80" y2="42" stroke="#94a3b8" stroke-width="2"/>
+                        </g>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-slate-900 text-lg sm:text-xl leading-tight uppercase tracking-tight">
+                        ОЮУНЫ ТУЛГА <span class="text-brand-600">СӨУЗ</span>
+                    </h1>
+                    <p class="text-xs text-slate-500 font-medium tracking-wide">
+                        СУРАГЧДЫН ӨӨРӨӨ УДИРДАХ ЗӨВЛӨЛ
+                    </p>
+                </div>
+            </div>
+
+            <!-- Action Navigation Controls -->
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <button onclick="openPosterModal()" class="inline-flex items-center space-x-2 bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition">
+                    <i class="fa-solid fa-print text-brand-600"></i>
+                    <span class="hidden sm:inline">A4 Постер</span>
+                </button>
+                <button id="adminLoginBtn" onclick="openAdminModal()" class="inline-flex items-center space-x-2 bg-brand-50 hover:bg-brand-100 text-brand-700 border border-brand-200 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition">
+                    <i class="fa-solid fa-lock text-brand-600"></i>
+                    <span id="adminBtnText" class="hidden sm:inline">Админ нэвтрэх</span>
+                </button>
+                <button id="adminLogoutBtn" onclick="logoutAdmin()" class="hidden inline-flex items-center space-x-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span class="hidden sm:inline">Гарах</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN HERO & CONTENT AREA -->
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-r from-brand-900 via-brand-800 to-brand-700 rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
+                <i class="fa-solid fa-comments text-[280px]"></i>
+            </div>
+            <div class="relative z-10 max-w-2xl space-y-4">
+                <div class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md px-3 py-1 rounded-full text-xs font-medium text-brand-100 border border-white/20">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>100% Нууцлалтай Санал хүсэлтийн хайрцаг</span>
+                </div>
+                <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-snug">
+                    Таны санал — Бидний шийдэл
+                </h2>
+                <p class="text-brand-100 text-sm sm:text-base leading-relaxed">
+                    Сургуулийн орчин, хичээлээс гадуурх үйл ажиллагаа болон сурагчдад туламдаж буй асуудлыг чөлөөтэй, нэрээ нууцлан бидэнд илгээгээрэй. СӨУЗ таны саналыг бодитоор шийдвэрлэх болно.
+                </p>
+                <div class="pt-2 flex flex-wrap gap-4 text-xs sm:text-sm font-medium text-brand-100">
+                    <div class="flex items-center space-x-2 bg-white/10 px-3 py-1.5 rounded-lg border border-white/10">
+                        <i class="fa-solid fa-user-shield text-brand-gold"></i>
+                        <span>Нэр нууцлах боломжтой</span>
+                    </div>
+                    <div class="flex items-center space-x-2 bg-white/10 px-3 py-1.5 rounded-lg border border-white/10">
+                        <i class="fa-solid fa-clock-rotate-left text-brand-gold"></i>
+                        <span>Явцыг шууд харах</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GRID: Form & Live List -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- LEFT COLUMN: Submit Suggestion Form (5 Cols) -->
+            <div class="lg:col-span-5 space-y-6">
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+                    <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
+                        <h3 class="text-lg font-bold text-slate-900 flex items-center space-x-2">
+                            <i class="fa-solid fa-paper-plane text-brand-600"></i>
+                            <span>Санал хүсэлт илгээх</span>
+                        </h3>
+                        <span class="text-xs font-semibold px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-full border border-emerald-200">
+                            Нууцлагдсан
+                        </span>
+                    </div>
+
+                    <form id="suggestionForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                                Ангилал сонгох <span class="text-rose-500">*</span>
+                            </label>
+                            <select id="suggestCategory" required class="w-full bg-slate-50 border border-slate-300 text-slate-800 text-sm rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 p-3 transition">
+                                <option value="">-- Ангилал сонгоно уу --</option>
+                                <option value="Сургуулийн орчин">🏫 Сургуулийн орчин ба Тав тух</option>
+                                <option value="Арга хэмжээ / Тэмцээн">🏀 Арга хэмжээ, Тэмцээн, Спорт</option>
+                                <option value="Клуб ба Сайн дур">🤝 Клуб, Сайн дурын ажил, Аян</option>
+                                <option value="Бусад санал">💡 Бусад шинэлэг санаа</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                                Гарчиг / Гарчиглах сэдэв <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="text" id="suggestTitle" required placeholder="Жишээ: Ариун цэврийн өрөөний хангамж сайжруулах" class="w-full bg-slate-50 border border-slate-300 text-slate-800 text-sm rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 p-3 transition">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                                Дэлгэрэнгүй санал <span class="text-rose-500">*</span>
+                            </label>
+                            <textarea id="suggestContent" required rows="4" placeholder="Та өөрийн санал, тулгамдаж буй асуудал болон боломжит шийдлийг дэлгэрэнгүй бичнэ үү..." class="w-full bg-slate-50 border border-slate-300 text-slate-800 text-sm rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 p-3 transition"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-800 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-brand-500/25 transition duration-150 flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span>Санал илгээх</span>
+                        </button>
+
+                        <p class="text-xs text-center text-slate-400 mt-2">
+                            <i class="fa-solid fa-lock mr-1"></i> Таны IP эсвэл хувийн мэдээллийг хадгалахгүй.
+                        </p>
+                    </form>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: Live Suggestion Feed (7 Cols) -->
+            <div class="lg:col-span-7 space-y-6">
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 mb-4 border-b border-slate-100">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900 flex items-center space-x-2">
+                                <i class="fa-solid fa-list-check text-brand-600"></i>
+                                <span>Ирсэн саналуудын явц</span>
+                            </h3>
+                            <p class="text-xs text-slate-500">Нийт санал ба шийдвэрлэлтийн төлөв</p>
+                        </div>
+
+                        <!-- Status Filter Tabs -->
+                        <div class="flex bg-slate-100 p-1 rounded-xl text-xs font-semibold overflow-x-auto">
+                            <button onclick="setFilter('all')" id="filter-all" class="filter-tab px-3 py-1.5 rounded-lg bg-white shadow-sm text-slate-900 transition">Бүгд</button>
+                            <button onclick="setFilter('Шинэ')" id="filter-Шинэ" class="filter-tab px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition">🔴 Шинэ</button>
+                            <button onclick="setFilter('Ажиллагаанд')" id="filter-Ажиллагаанд" class="filter-tab px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition">🟡 Явцтай</button>
+                            <button onclick="setFilter('Шийдэгдсэн')" id="filter-Шийдэгдсэн" class="filter-tab px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition">🟢 Шийдсэн</button>
+                        </div>
+                    </div>
+
+                    <!-- Suggestion List Container -->
+                    <div id="suggestionFeed" class="space-y-4 max-h-[600px] overflow-y-auto pr-1">
+                        <!-- Dynamic items loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL: Admin Login (Protected with PIN password) -->
+    <div id="adminModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 relative animate-in fade-in zoom-in duration-200">
+            <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-100 transition">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div class="text-center space-y-3 mb-6">
+                <div class="w-12 h-12 bg-brand-100 text-brand-600 rounded-2xl mx-auto flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900">СӨУЗ Админ нэвтрэх</h3>
+                <p class="text-xs text-slate-500">Удирдлагын хэсэгт нэвтрэхийн тулд нууц PIN кодоо оруулна уу.</p>
+            </div>
+
+            <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 text-center">
+                        Нууц PIN код
+                    </label>
+                    <!-- Input type="password" ensures characters are masked -->
+                    <input type="password" id="adminPinInput" required maxlength="8" placeholder="••••" autocomplete="current-password" class="w-full text-center tracking-[0.5em] text-2xl font-mono bg-slate-50 border border-slate-300 text-slate-900 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 p-3 transition">
+                </div>
+
+                <div id="adminAuthError" class="hidden text-xs text-rose-600 text-center font-medium bg-rose-50 p-2.5 rounded-xl border border-rose-200">
+                    <i class="fa-solid fa-triangle-exclamation mr-1"></i> Нууц PIN код буруу байна!
+                </div>
+
+                <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3 rounded-xl shadow-md transition">
+                    Нэвтрэх
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: A4 Campaign Poster Modal -->
+    <div id="posterModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-md z-50 flex items-center justify-center hidden p-4 overflow-y-auto">
+        <div class="bg-slate-100 rounded-2xl max-w-3xl w-full p-4 sm:p-6 shadow-2xl relative my-8">
+            <!-- Modal Controls -->
+            <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-200 no-print">
+                <h3 class="text-lg font-bold text-slate-900 flex items-center space-x-2">
+                    <i class="fa-solid fa-print text-brand-600"></i>
+                    <span>СӨУЗ Сонгуулийн A4 Постер</span>
+                </h3>
+                <div class="flex items-center space-x-2">
+                    <button onclick="window.print()" class="bg-brand-600 hover:bg-brand-700 text-white text-xs sm:text-sm font-bold px-4 py-2 rounded-xl transition flex items-center space-x-1.5 shadow">
+                        <i class="fa-solid fa-print"></i>
+                        <span>Хэвлэх (A4)</span>
+                    </button>
+                    <button onclick="closePosterModal()" class="text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-200 transition">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Printable Poster Wrapper -->
+            <div id="posterSection" class="bg-white p-8 rounded-xl border border-slate-200 shadow-md text-slate-800 space-y-6">
+                <!-- Poster Header -->
+                <div class="flex items-center justify-between border-b-2 border-brand-600 pb-6">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-16 h-16 flex-shrink-0">
+                            <svg viewBox="0 0 300 300" class="w-full h-full">
+                                <ellipse cx="150" cy="150" rx="130" ry="100" fill="none" stroke="#2563eb" stroke-width="26" />
+                                <rect x="132" y="70" width="36" height="100" fill="#2563eb" rx="2"/>
+                                <line x1="132" y1="95" x2="168" y2="95" stroke="#f59e0b" stroke-width="6"/>
+                                <polygon points="132,170 168,170 150,235" fill="#f59e0b"/>
+                                <polygon points="144,170 156,170 150,235" fill="#d97706"/>
+                                <line x1="150" y1="170" x2="150" y2="215" stroke="#1e3a8a" stroke-width="2"/>
+                                <circle cx="150" cy="190" r="3" fill="#1e3a8a"/>
+                                <g transform="translate(50, 110) scale(0.7)">
+                                    <path d="M0,20 Q20,10 45,25 Q70,10 90,20 L90,65 Q70,55 45,70 Q20,55 0,65 Z" fill="#ffffff" stroke="#000000" stroke-width="4"/>
+                                    <line x1="45" y1="25" x2="45" y2="70" stroke="#000000" stroke-width="4"/>
+                                </g>
+                                <g transform="translate(190, 110) scale(0.7)">
+                                    <path d="M0,20 Q20,10 45,25 Q70,10 90,20 L90,65 Q70,55 45,70 Q20,55 0,65 Z" fill="#ffffff" stroke="#000000" stroke-width="4"/>
+                                    <line x1="45" y1="25" x2="45" y2="70" stroke="#000000" stroke-width="4"/>
+                                </g>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-black text-slate-900 tracking-tight uppercase">ОЮУНЫ ТУЛГА СӨУЗ</h2>
+                            <p class="text-xs font-bold text-brand-600 tracking-wider">СУРАГЧДЫН ӨӨРӨӨ УДИРДАХ ЗӨВЛӨЛ</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="inline-block bg-brand-900 text-white text-xs font-black px-3 py-1 rounded">2024 - 2025</span>
+                    </div>
+                </div>
+
+                <!-- Manifesto Section -->
+                <div class="space-y-4">
+                    <div class="bg-brand-50 p-4 rounded-xl border border-brand-100">
+                        <h4 class="text-xs font-black text-brand-800 uppercase tracking-widest mb-1">🎯 ЗОРИЛГО</h4>
+                        <p class="text-xs text-slate-700 leading-relaxed font-medium">
+                            Сурагчдынхаа саналыг сонсож, тэдний хүсэж байгаа өөрчлөлтийг СӨУЗ-өөр дамжуулан бодитоор хэрэгжүүлэх. Сургуульдаа сурагч бүр өөрийн санаагаа чөлөөтэй хэлж, оролцож чаддаг орчин бүрдүүлэх.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h4 class="text-xs font-black text-slate-900 uppercase tracking-widest mb-2 border-b pb-1">📋 МӨРИЙН ХӨТӨЛБӨРИЙН ТОЙМ</h4>
+                        <ul class="text-xs space-y-1.5 text-slate-700 font-medium">
+                            <li class="flex items-start"><i class="fa-solid fa-check text-brand-600 mt-0.5 mr-2"></i> <span><strong>QR Саналын систем:</strong> Сурагчдын санал хүсэлтийг 100% нууцлалтай авч шийдвэрлэх.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-brand-600 mt-0.5 mr-2"></i> <span><strong>Спорт &amp; E-Sports:</strong> Сагсан бөмбөг болон Цахим спортын сургуулийн аварга зохион байгуулах.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-brand-600 mt-0.5 mr-2"></i> <span><strong>Сайн дурын ажил:</strong> Мод тарих эко аян болон "Дүүдээ тусалъя", Номын аян хэрэгжүүлэх.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-brand-600 mt-0.5 mr-2"></i> <span><strong>Клубүүдийн дэмжлэг:</strong> "Улаан загалмай", "Азтай савар" болон бусад клубүүдийг дэмжих.</span></li>
+                            <li class="flex items-start"><i class="fa-solid fa-check text-brand-600 mt-0.5 mr-2"></i> <span><strong>Ил тод тайлан:</strong> СӨУЗ-ийн ажиллах явц, шийдвэрийг сар бүр нээлттэй тайлагнаж байх.</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Poster Footer & QR Code Section -->
+                <div class="pt-4 border-t border-slate-200 flex items-center justify-between">
+                    <div class="space-y-1">
+                        <p class="text-xs font-black text-slate-900">📣 УРИА: “Таны санал — Бидний шийдэл.”</p>
+                        <p class="text-[11px] text-slate-500">💬 “Чадна гэж ярихаас илүү, хийж үзүүлэх нь чухал.”</p>
+                    </div>
+
+                    <div class="text-center space-y-1">
+                        <div id="qrcode" class="p-1.5 bg-white border border-slate-300 rounded-lg inline-block"></div>
+                        <p class="text-[9px] font-bold text-slate-600 uppercase">Утаснаасаа уншуулж санал илгээнэ үү</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Configuration & Master Pin (Admin Password)
+        const ADMIN_PIN = "0712"; 
+        let isAdminLoggedIn = false;
+        let activeFilter = 'all';
+
+        // Initial Seed Data if LocalStorage is empty
+        const initialSuggestions = [
+            {
+                id: 'sug-101',
+                category: 'Сургуулийн орчин',
+                title: 'Ариун цэврийн өрөөний саван ба цаасны хангамж',
+                content: '3 ба 4 давхрын ариун цэврийн өрөөнд гараа угаах саван болон гар арчих цаас тогтмол дуусчихдаг. Хангамжийг тогтмолжуулж өгнө үү.',
+                status: 'Ажиллагаанд',
+                responseNote: 'СӨУЗ-ийн зүгээс сургуулийн аж ахуйн албанд уламжлан, савангийн савыг өдөр бүр 2 удаа шалгаж дүүргэх хуваарь гаргалаа.',
+                timestamp: '2024-10-12 14:30',
+                isVisible: true
+            },
+            {
+                id: 'sug-102',
+                category: 'Арга хэмжээ / Тэмцээн',
+                title: 'E-Sports (Mobile Legends / PUBG) тэмцээн зохион байгуулах',
+                content: 'Сургуулийн хэмжээнд амралтын өдрүүдээр онлайнаар цахим спортын аваргын тэмцээн явуулж өгөөч. Багууд бэлэн байгаа.',
+                status: 'Шийдэгдсэн',
+                responseNote: 'Тэмцээний журам бэлэн болсон. Ирэх сарын 1-ний амралтын өдрөөр бүртгэл эхэлж онлайн хэлбэрээр явагдана.',
+                timestamp: '2024-10-10 11:15',
+                isVisible: true
+            },
+            {
+                id: 'sug-103',
+                category: 'Клуб ба Сайн дур',
+                title: 'Азтай савар сайн дурын аян хийх',
+                content: 'Эзэнгүй амьтдад туслах, хоол ба дулаан үүр хийх сайн дурын ханвийн аян санаачлах хүсэлтэй байна.',
+                status: 'Шинэ',
+                responseNote: '',
+                timestamp: '2024-10-13 09:40',
+                isVisible: true
+            }
+        ];
+
+        window.onload = function() {
+            // Load saved data or initialize
+            if (!localStorage.getItem('souz_suggestions')) {
+                localStorage.setItem('souz_suggestions', JSON.stringify(initialSuggestions));
+            }
+            renderSuggestions();
+            generatePosterQR();
+        };
+
+        // Get saved suggestions from LocalStorage
+        function getSuggestions() {
+            return JSON.parse(localStorage.getItem('souz_suggestions')) || [];
+        }
+
+        // Save suggestions to LocalStorage
+        function saveSuggestions(data) {
+            localStorage.setItem('souz_suggestions', JSON.stringify(data));
+            renderSuggestions();
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const category = document.getElementById('suggestCategory').value;
+            const title = document.getElementById('suggestTitle').value.trim();
+            const content = document.getElementById('suggestContent').value.trim();
+
+            if (!category || !title || !content) return;
+
+            const newSuggestion = {
+                id: 'sug-' + Date.now(),
+                category: category,
+                title: title,
+                content: content,
+                status: 'Шинэ',
+                responseNote: '',
+                timestamp: new Date().toLocaleString('mn-MN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }),
+                isVisible: true
+            };
+
+            const list = getSuggestions();
+            list.unshift(newSuggestion);
+            saveSuggestions(list);
+
+            // Reset form
+            document.getElementById('suggestionForm').reset();
+            alert("Таны санал амжилттай илгээгдлээ! СӨУЗ хүлээн авч шийдвэрлэх болно.");
+        }
+
+        function setFilter(filter) {
+            activeFilter = filter;
+            document.querySelectorAll('.filter-tab').forEach(btn => {
+                btn.classList.remove('bg-white', 'shadow-sm', 'text-slate-900');
+                btn.classList.add('text-slate-600');
+            });
+            const activeBtn = document.getElementById(`filter-${filter}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-white', 'shadow-sm', 'text-slate-900');
+                activeBtn.classList.remove('text-slate-600');
+            }
+            renderSuggestions();
+        }
+
+        function renderSuggestions() {
+            const feed = document.getElementById('suggestionFeed');
+            feed.innerHTML = '';
+
+            let list = getSuggestions();
+
+            // Filter by Admin Visibility if not admin
+            if (!isAdminLoggedIn) {
+                list = list.filter(item => item.isVisible !== false);
+            }
+
+            // Filter by Tab status
+            if (activeFilter !== 'all') {
+                list = list.filter(item => item.status === activeFilter);
+            }
+
+            if (list.length === 0) {
+                feed.innerHTML = `
+                    <div class="text-center py-12 bg-slate-50 rounded-xl border border-dashed border-slate-200">
+                        <i class="fa-solid fa-inbox text-3xl text-slate-300 mb-2"></i>
+                        <p class="text-xs text-slate-500 font-medium">Одоогоор санал хүсэлт олдсонгүй.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            list.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-slate-50 hover:bg-slate-100/80 transition p-4 rounded-xl border border-slate-200/80 space-y-3 relative";
+
+                // Badge styling
+                let statusBadge = '';
+                if (item.status === 'Шинэ') {
+                    statusBadge = `<span class="inline-flex items-center space-x-1 bg-rose-50 text-rose-700 text-xs font-bold px-2.5 py-1 rounded-full border border-rose-200"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span><span>🔴 Шинэ</span></span>`;
+                } else if (item.status === 'Ажиллагаанд') {
+                    statusBadge = `<span class="inline-flex items-center space-x-1 bg-amber-50 text-amber-700 text-xs font-bold px-2.5 py-1 rounded-full border border-amber-200"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span><span>🟡 Ажиллагаанд</span></span>`;
+                } else {
+                    statusBadge = `<span class="inline-flex items-center space-x-1 bg-emerald-50 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-full border border-emerald-200"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span>🟢 Шийдэгдсэн</span></span>`;
+                }
+
+                card.innerHTML = `
+                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200/60 pb-2">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-[11px] font-bold px-2 py-0.5 bg-brand-50 text-brand-700 rounded border border-brand-100">${item.category}</span>
+                            <span class="text-[11px] text-slate-400 font-medium">${item.timestamp}</span>
+                        </div>
+                        <div>${statusBadge}</div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm mb-1">${escapeHtml(item.title)}</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">${escapeHtml(item.content)}</p>
+                    </div>
+
+                    ${item.responseNote ? `
+                        <div class="bg-white p-3 rounded-lg border border-brand-200/80 text-xs space-y-1">
+                            <div class="flex items-center space-x-1.5 font-bold text-brand-700">
+                                <i class="fa-solid fa-reply"></i>
+                                <span>СӨУЗ-ийн Хариу / Шийдвэр:</span>
+                            </div>
+                            <p class="text-slate-700 pl-4 border-l-2 border-brand-500">${escapeHtml(item.responseNote)}</p>
+                        </div>
+                    ` : ''}
+
+                    ${isAdminLoggedIn ? `
+                        <div class="pt-3 border-t border-slate-200/80 flex flex-wrap items-center justify-between gap-2 bg-slate-200/40 -mx-4 -mb-4 p-3 rounded-b-xl">
+                            <div class="flex items-center space-x-2">
+                                <label class="text-[11px] font-bold text-slate-600">Төлөв:</label>
+                                <select onchange="updateItemStatus('${item.id}', this.value)" class="text-xs bg-white border border-slate-300 rounded-lg p-1 font-semibold text-slate-800">
+                                    <option value="Шинэ" ${item.status === 'Шинэ' ? 'selected' : ''}>🔴 Шинэ</option>
+                                    <option value="Ажиллагаанд" ${item.status === 'Ажиллагаанд' ? 'selected' : ''}>🟡 Ажиллагаанд</option>
+                                    <option value="Шийдэгдсэн" ${item.status === 'Шийдэгдсэн' ? 'selected' : ''}>🟢 Шийдэгдсэн</option>
+                                </select>
+                            </div>
+
+                            <div class="flex items-center space-x-2">
+                                <button onclick="promptResponseNote('${item.id}')" class="text-xs bg-brand-600 hover:bg-brand-700 text-white font-medium px-2.5 py-1 rounded-lg transition">
+                                    <i class="fa-solid fa-pen mr-1"></i>Хариу бичих
+                                </button>
+                                <button onclick="deleteItem('${item.id}')" class="text-xs bg-rose-600 hover:bg-rose-700 text-white font-medium px-2 py-1 rounded-lg transition">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    ` : ''}
+                `;
+
+                feed.appendChild(card);
+            });
+        }
+
+        function updateItemStatus(id, newStatus) {
+            const list = getSuggestions();
+            const target = list.find(x => x.id === id);
+            if (target) {
+                target.status = newStatus;
+                saveSuggestions(list);
+            }
+        }
+
+        function promptResponseNote(id) {
+            const list = getSuggestions();
+            const target = list.find(x => x.id === id);
+            if (target) {
+                const note = prompt("СӨУЗ-ийн албан ёсны хариуг бичнэ үү:", target.responseNote || '');
+                if (note !== null) {
+                    target.responseNote = note.trim();
+                    saveSuggestions(list);
+                }
+            }
+        }
+
+        function deleteItem(id) {
+            if (confirm("Энэ санал хүсэлтийг устгахдаа итгэлтэй байна уу?")) {
+                let list = getSuggestions();
+                list = list.filter(x => x.id !== id);
+                saveSuggestions(list);
+            }
+        }
+
+        function openAdminModal() {
+            document.getElementById('adminModal').classList.remove('hidden');
+            document.getElementById('adminPinInput').focus();
+        }
+
+        function closeAdminModal() {
+            document.getElementById('adminModal').classList.add('hidden');
+            document.getElementById('adminAuthError').classList.add('hidden');
+            document.getElementById('adminPinInput').value = '';
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const inputPin = document.getElementById('adminPinInput').value;
+
+            if (inputPin === ADMIN_PIN) {
+                isAdminLoggedIn = true;
+                closeAdminModal();
+                document.getElementById('adminLoginBtn').classList.add('hidden');
+                document.getElementById('adminLogoutBtn').classList.remove('hidden');
+                renderSuggestions();
+                alert("СӨУЗ Админ системд амжилттай нэвтэрлээ!");
+            } else {
+                document.getElementById('adminAuthError').classList.remove('hidden');
+            }
+        }
+
+        function logoutAdmin() {
+            isAdminLoggedIn = false;
+            document.getElementById('adminLoginBtn').classList.remove('hidden');
+            document.getElementById('adminLogoutBtn').classList.add('hidden');
+            renderSuggestions();
+            alert("Админ системээс гарлаа.");
+        }
+
+        function openPosterModal() {
+            document.getElementById('posterModal').classList.remove('hidden');
+        }
+
+        function closePosterModal() {
+            document.getElementById('posterModal').classList.add('hidden');
+        }
+
+        function generatePosterQR() {
+            const qrContainer = document.getElementById("qrcode");
+            qrContainer.innerHTML = '';
+            new QRCode(qrContainer, {
+                text: window.location.href,
+                width: 90,
+                height: 90,
+                colorDark: "#1e3a8a",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+
+        // Helper function to escape HTML special chars
+        function escapeHtml(text) {
+            return String(text)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
+```
